@@ -1,0 +1,18 @@
+.home_container {
+    width: 500px;
+}
+
+.home_title {
+    font-size: 26px;
+    text-align: center;
+}
+
+.home_date {
+    text-align: center;
+}
+
+.home_date input {
+    font-size: 13px;
+    padding: 2px;
+    text-align: center;
+}
