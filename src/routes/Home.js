@@ -67,7 +67,7 @@ class Home extends React.Component {
                 <div className="home_title"><b>BOX OFFICE:</b> {date_with_dash}</div>
                 <div className="home_date">
                     Want different date? 
-                    <input type="date" max={today_with_dash} value={today_with_dash} onChange={this.handleDateChange} />
+                    <input type="date" max={today_with_dash} value={date_with_dash} onChange={this.handleDateChange} />
                 </div>
                 {charts}
             </div>

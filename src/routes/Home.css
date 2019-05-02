@@ -1,5 +1,8 @@
 .home_container {
-    width: 500px;
+    width: 350px;
+    height: fit-content;
+    background-color: #dedede;
+    padding: 15px;
 }
 
 .home_title {
@@ -13,6 +16,9 @@
 
 .home_date input {
     font-size: 13px;
-    padding: 2px;
+    padding: 1px;
     text-align: center;
+    background-color: transparent;
+    border: 1px solid #333;
+    margin-left: 10px;
 }
