@@ -56,6 +56,7 @@ class Home extends React.Component {
               key={key}
               ranking={movie.rank}
               title={movie.movieNm}
+              rankInten={movie.rankInten}
             />
           ));
 
