@@ -1,8 +1,9 @@
 .home_container {
-    width: 350px;
+    width: 100%;
     height: fit-content;
     background-color: #dedede;
-    padding: 15px;
+    padding: 30px;
+    margin: 0 auto;
 }
 
 .home_title {
