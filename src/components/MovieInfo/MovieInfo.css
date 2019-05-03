@@ -1,0 +1,26 @@
+.movie_info_container {
+    width: 40%;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+.movie_info_box {
+    display: flex;
+    justify-content: left;
+    align-items: flex-end;
+    margin-top: 20px;
+}
+
+.movie_info_ko {
+    font-size: 32px;
+    font-weight: 800;
+    margin-right: 10px;
+}
+
+.movie_info_en {
+    font-size: 25px;
+}
+
+.movie_info_detail {
+    width: 50%;
+}

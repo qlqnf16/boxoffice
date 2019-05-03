@@ -30,6 +30,11 @@
     text-overflow: ellipsis;
 }
 
+.movie_title a {
+    color: #333;
+    text-decoration: none;
+}
+
 .movie_rank_zero {
     width: 7px;
     height: 3.5px;

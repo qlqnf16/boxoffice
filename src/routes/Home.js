@@ -30,7 +30,7 @@ class Home extends React.Component {
     }
 
     getResult = async (getDate) => {
-        let result = await axios.get('', {
+        let result = await axios.get('boxoffice/searchDailyBoxOfficeList.json?', {
             params: {
                 key: API_KEY,
                 targetDt: getDate
@@ -57,6 +57,7 @@ class Home extends React.Component {
               ranking={movie.rank}
               title={movie.movieNm}
               rankInten={movie.rankInten}
+              movieCode={movie.movieCd}
             />
           ));
 

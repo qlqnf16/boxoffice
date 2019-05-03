@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import './MovieChart.css'
 
 const MovieChart = (props) => {
@@ -11,7 +13,7 @@ const MovieChart = (props) => {
         <div className="movie_box">
         <div className="movie_flex">
             <div className="movie_ranking">{props.ranking}</div>
-            <div className="movie_title">{props.title}</div>
+            <div className="movie_title"><Link to={`/detail/${props.movieCode}`}>{props.title}</Link></div>
         </div>
             <div className={rankInten}></div>
         </div>
