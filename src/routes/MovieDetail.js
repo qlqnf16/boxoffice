@@ -1,7 +1,11 @@
 import React from 'react';
 import axios from '../axios';
+import chart from 'billboard.js';
 
-import MovieInfo from '../components/MovieInfo/MovieInfo'
+import 'billboard.js/dist/billboard.css'
+
+import MovieInfo from '../components/MovieInfo/MovieInfo';
+import MovieGraph from '../components/MovieInfo/MovieGraph'
 
 const KEY = process.env.REACT_APP_KOBIS_API_KEY;
 
@@ -19,6 +23,8 @@ class MovieDetail extends React.Component {
             nations: [],
             genres: [],
             directors: [],
+            rank: [],
+            weekBoxOffice: [],
         }
     }
 
@@ -56,20 +62,82 @@ class MovieDetail extends React.Component {
             directors: newDirectors
         })
 
+        let rankings = [11,11,11,11,11];
+        let weeks = ["-","-","-","-","-"];
+        let today = new Date();
+        let searchDate = new Date();
+        let year = today.getFullYear()+""; 
+        let month; let date;
+        for (let i = 4; i >= 0; i --){
+            searchDate.setDate(searchDate.getDate() - 7);
+            month = searchDate.getMonth() + 1;
+            date = searchDate.getDate();
+            month = month < 10 ? "0" + month : "" + month;
+            date = date < 10 ? "0" + date : "" + date;
+            let targetDate = year+month+date
+            weeks[i] = targetDate;
+
+            let result = await axios.get("boxoffice/searchDailyBoxOfficeList.json?", {
+                params: {
+                    key: KEY,
+                    targetDt: targetDate
+                }
+            })
+            let boxoffice = result.data.boxOfficeResult.dailyBoxOfficeList
+            let found = boxoffice.find(element => {
+                return element.movieCd == this.state.movieCode
+            })
+    
+            rankings[i] =  !found ? 11 : found.rank;
+
+
+            if (targetDate < this.state.openDate) break;
+
+        }
+        this.setState({
+            rank: rankings,
+            weekBoxOffice: weeks
+        })
+        
+        this._renderChart();
+    }
+
+    _renderChart() {
+        let columns = ["최근 5주 박스오피스 순위"].concat(this.state.rank);
+        chart.generate({
+            bindto: "#myChart",
+            data: {
+                columns: [columns],
+            },
+            axis: {
+                y: {
+                    inverted: true,
+                    max: Math.max.apply(Math, this.state.rank)-1,
+                    min: Math.min.apply(Math, this.state.rank)
+                },
+                x: {
+                    type: "category",
+                    categories: this.state.weekBoxOffice
+                }
+            }
+        });
     }
     
     render() {
         return (
-            <MovieInfo 
-                movieName={this.state.movieName} 
-                movieNameEng={this.state.movieNameEng}
-                showTime={this.state.showTime}
-                openDate={this.state.openDate}
-                typeName={this.state.typeName}
-                nations={this.state.nations} 
-                genres={this.state.genres}
-                directors={this.state.directors} 
-                />
+            <React.Fragment>
+                <MovieInfo 
+                    movieName={this.state.movieName} 
+                    movieNameEng={this.state.movieNameEng}
+                    showTime={this.state.showTime}
+                    openDate={this.state.openDate}
+                    typeName={this.state.typeName}
+                    nations={this.state.nations} 
+                    genres={this.state.genres}
+                    directors={this.state.directors} 
+                    />
+                <MovieGraph />
+            </React.Fragment>
         )
     }
 }
