@@ -62,6 +62,7 @@ class MovieDetail extends React.Component {
             directors: newDirectors
         })
 
+        // Chart 정보 받아오기
         let rankings = [11,11,11,11,11];
         let weeks = ["-","-","-","-","-"];
         let today = new Date();
@@ -90,15 +91,13 @@ class MovieDetail extends React.Component {
     
             rankings[i] =  !found ? 11 : found.rank;
 
-
             if (targetDate < this.state.openDate) break;
-
         }
+
         this.setState({
             rank: rankings,
             weekBoxOffice: weeks
         })
-        
         this._renderChart();
     }
 
@@ -108,6 +107,7 @@ class MovieDetail extends React.Component {
             bindto: "#myChart",
             data: {
                 columns: [columns],
+                color: d => "#72408e"
             },
             axis: {
                 y: {
@@ -119,7 +119,7 @@ class MovieDetail extends React.Component {
                     type: "category",
                     categories: this.state.weekBoxOffice
                 }
-            }
+            },
         });
     }
     
