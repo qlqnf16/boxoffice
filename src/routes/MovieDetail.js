@@ -24,6 +24,7 @@ class MovieDetail extends React.Component {
             genres: [],
             directors: [],
             rank: [],
+            audience: [],
             weekBoxOffice: [],
         }
     }
@@ -64,6 +65,7 @@ class MovieDetail extends React.Component {
 
         // Chart 정보 받아오기
         let rankings = [11,11,11,11,11];
+        let temp_audience = [0,0,0,0,0];
         let weeks = ["-","-","-","-","-"];
         let today = new Date();
         let searchDate = new Date();
@@ -76,6 +78,8 @@ class MovieDetail extends React.Component {
             month = month < 10 ? "0" + month : "" + month;
             date = date < 10 ? "0" + date : "" + date;
             let targetDate = year+month+date
+            
+            if (targetDate < this.state.openDate) break;
             weeks[i] = targetDate;
 
             let result = await axios.get("boxoffice/searchDailyBoxOfficeList.json?", {
@@ -90,30 +94,47 @@ class MovieDetail extends React.Component {
             })
     
             rankings[i] =  !found ? 11 : found.rank;
+            temp_audience[i] = !found ? temp_audience[i+1] : found.audiAcc;
 
-            if (targetDate < this.state.openDate) break;
         }
 
         this.setState({
             rank: rankings,
+            audience: temp_audience,
             weekBoxOffice: weeks
         })
-        this._renderChart();
+        this._renderBoxOfficeChart();
     }
 
-    _renderChart() {
-        let columns = ["최근 5주 박스오피스 순위"].concat(this.state.rank);
+    _renderBoxOfficeChart() {
+        let boxOffice = ["최근 5주 박스오피스 순위"].concat(this.state.rank)
+        let audience = ["누적 관객 수"].concat(this.state.audience);
+
         chart.generate({
             bindto: "#myChart",
             data: {
-                columns: [columns],
-                color: d => "#72408e"
+                columns: [boxOffice, audience],
+                colors: {
+                    "최근 5주 박스오피스 순위": d => "#72408e",
+                    "누적 관객 수": "#6fab6f"
+                },
+                axes: {
+                    "최근 5주 박스오피스 순위": "y",
+                    "누적 관객 수": "y2"
+                },
+                types: {
+                    "최근 5주 박스오피스 순위": "line",
+                    "누적 관객 수": "area-spline"
+                }
             },
             axis: {
                 y: {
                     inverted: true,
                     max: Math.max.apply(Math, this.state.rank)-1,
                     min: Math.min.apply(Math, this.state.rank)
+                },
+                y2: {
+                    show: true
                 },
                 x: {
                     type: "category",

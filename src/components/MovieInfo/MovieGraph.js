@@ -3,7 +3,7 @@ import './MovieGraph.css'
 
 const MovieGraph = (props) => {
     return (
-        <div id="myChart" className="movie_graph_box"/>
+            <div id="myChart" className="movie_graph_box"/>
     )
 }
 
